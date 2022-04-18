@@ -13,6 +13,10 @@ public class FleetPlacementGenerator {
         shipPlacementGenerator = new ShipPlacementGenerator(boardSize);
     }
 
+    public FleetPlacementGenerator(ShipPlacementGenerator shipPlacementGenerator) {
+        this.shipPlacementGenerator = shipPlacementGenerator;
+    }
+
     /**
      * Randomly places a set of ships on the board. Ships are placed according to game rules and do not overlap.
      *
@@ -46,15 +50,23 @@ public class FleetPlacementGenerator {
         }
     }
 
+    /**
+     * Checks overlap between newly generated ship and previously generated ones
+     * @param candidateLocation set of coordinates of new randomly generated ship
+     * @param previouslyGenerated set of coordinates of previously generated ships
+     * @return true if new randomly generated ship overlaps with previously generated ships, false otherwise
+     */
     private boolean overlapsWith(Set<Coordinates> candidateLocation, Set<Coordinates> previouslyGenerated) {
         return candidateLocation.stream().anyMatch(segment -> previouslyGenerated.contains(segment));
     }
-    
+
+    /**
+     * Transforms set of ship segment coordinates into map
+     * @param ship ship object
+     * @param candidateLocation set of coordinates of new randomly generated ship
+     * @return map of coordinates entries pointing to ship object
+     */
     private  Map<Coordinates, Ship> newShipSegments(Ship ship, Set<Coordinates> candidateLocation) {
         return candidateLocation.stream().collect(Collectors.toMap(Function.identity(), i -> ship));
     }
-
-
-
-
 }

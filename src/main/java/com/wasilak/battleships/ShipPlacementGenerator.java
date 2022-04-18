@@ -2,13 +2,14 @@ package com.wasilak.battleships;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ShipPlacementGenerator {
 
     private Integer boardSize;
-    private Random random;
+    private RandomGenerator random;
 
     private enum Orientation {
         VERTICAL, HORIZONTAL
@@ -17,6 +18,11 @@ public class ShipPlacementGenerator {
     public ShipPlacementGenerator(Integer boardSize) {
         this.boardSize = boardSize;
         random = new Random();
+    }
+
+    public ShipPlacementGenerator(Integer boardSize, RandomGenerator random) {
+        this.boardSize = boardSize;
+        this.random = random;
     }
 
     /**

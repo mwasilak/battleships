@@ -1,52 +1,78 @@
 package com.wasilak.battleships;
 
 import java.util.Arrays;
+import java.util.Map;
 
 class Board {
 
-    private static final int UPPERCASE_A_SHIFT = 65;
+    enum FieldStatus {
+        UNKNOWN, MISS, HIT
+    }
 
     private Integer boardSize;
     private FieldStatus[][] fields;
+    private Map<Coordinates, Ship> shipSegments;
 
-    public Board(Integer boardSize) {
+    public Board(Integer boardSize, Map<Coordinates, Ship> shipSegments) {
         this.boardSize = boardSize;
+        this.shipSegments = shipSegments;
         initializeFreshBoard();
     }
 
-    public boolean hasNotBeenTargeted(Coordinates targetCoordinates) {
-        return fields[targetCoordinates.getRow()][targetCoordinates.getColumn()].equals(FieldStatus.UNKNOWN);
+    public boolean isVictoryConditionFulfilled() {
+        return shipSegments.isEmpty();
     }
 
-    public void markAsHit(Coordinates targetCoordinates) {
-        fields[targetCoordinates.getRow()][targetCoordinates.getColumn()] = FieldStatus.HIT;
+    public FieldStatus[][] getBoardStatus() {
+        return fields;
     }
 
-    public void markAsMiss(Coordinates targetCoordinates) {
-        fields[targetCoordinates.getRow()][targetCoordinates.getColumn()] = FieldStatus.MISS;
-    }
-
-    public String drawBoard() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("  1 2 3 4 5 6 7 8 9 10\n");
-        for(int i = 0; i < boardSize; i++) {
-            builder.append((char)(i + UPPERCASE_A_SHIFT));
-            builder.append(" ");
-            for(int j = 0; j < boardSize; j++) {
-                switch(fields[i][j]) {
-                    case UNKNOWN ->  builder.append(". ");
-                    case MISS -> builder.append("/ ");
-                    case HIT -> builder.append("X ");
-                }
-            }
-            builder.append("\n");
+    public String processInput(Coordinates targetCoordinates) {
+        if (hasFieldNotBeenTargeted(targetCoordinates)) {
+            return processShot(targetCoordinates);
+        } else {
+            return "This field has already been targeted. Choose different field";
         }
-        return builder.toString();
+    }
+
+    private String processShot(Coordinates targetCoordinates) {
+        if (shipSegments.containsKey(targetCoordinates)) {
+            return this.processHit(targetCoordinates);
+        } else {
+            this.markFieldAsMiss(targetCoordinates);
+            return "Miss.";
+        }
+    }
+
+    private String processHit(Coordinates targetCoordinates) {
+        this.markFieldAsHit(targetCoordinates);
+        Ship damagedShip = shipSegments.get(targetCoordinates);
+        shipSegments.remove(targetCoordinates);
+        return hitOrSinkMessage(damagedShip);
+    }
+
+    private String hitOrSinkMessage(Ship damagedShip) {
+        if(!shipSegments.containsValue(damagedShip)) {
+            return damagedShip.getName() + " sunk!";
+        } else {
+            return damagedShip.getName() + " hit!";
+        }
     }
 
     private void initializeFreshBoard() {
-
         fields = new FieldStatus[boardSize][boardSize];
         Arrays.stream(fields).forEach(field -> Arrays.fill(field, FieldStatus.UNKNOWN));
+    }
+
+    private boolean hasFieldNotBeenTargeted(Coordinates targetCoordinates) {
+        return fields[targetCoordinates.getRow()][targetCoordinates.getColumn()].equals(FieldStatus.UNKNOWN);
+    }
+
+    private void markFieldAsHit(Coordinates targetCoordinates) {
+        fields[targetCoordinates.getRow()][targetCoordinates.getColumn()] = FieldStatus.HIT;
+    }
+
+    private void markFieldAsMiss(Coordinates targetCoordinates) {
+        fields[targetCoordinates.getRow()][targetCoordinates.getColumn()] = FieldStatus.MISS;
     }
 }

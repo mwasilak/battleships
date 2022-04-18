@@ -3,9 +3,6 @@ package com.wasilak.battleships;
 import java.util.Objects;
 
 class Coordinates {
-
-    private static final int UPPERCASE_A_SHIFT = 65;
-    private static final int LOWERCASE_A_SHIFT = 97;
     
     private final int row;
     private final int column;
@@ -15,30 +12,12 @@ class Coordinates {
         this.column = column;
     }
 
-    public Coordinates(String letterInput, String numberInput) {
-        if(letterInput.equals(letterInput.toUpperCase())) {
-            this.row = letterInput.charAt(0) - UPPERCASE_A_SHIFT;
-        } else {
-            this.row = letterInput.charAt(0) - LOWERCASE_A_SHIFT;
-        }
-
-        this.column = Integer.parseInt(numberInput) - 1;
-    }
-
     public int getRow() {
         return row;
     }
 
     public int getColumn() {
         return column;
-    }
-
-    @Override
-    public String toString() {
-        return "com.wasilak.battleships.Coordinates{" +
-                "row=" + row +
-                ", column=" + column +
-                '}';
     }
 
     @Override
