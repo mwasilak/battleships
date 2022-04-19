@@ -1,5 +1,7 @@
-package com.wasilak.battleships;
+package com.wasilak.battleships.generator;
 
+import com.wasilak.battleships.data.Coordinates;
+import com.wasilak.battleships.data.Ship;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

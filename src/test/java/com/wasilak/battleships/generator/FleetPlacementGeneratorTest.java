@@ -1,5 +1,7 @@
-package com.wasilak.battleships;
+package com.wasilak.battleships.generator;
 
+import com.wasilak.battleships.data.Coordinates;
+import com.wasilak.battleships.data.Ship;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -14,7 +16,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +47,7 @@ class FleetPlacementGeneratorTest {
     }
 
     private void initializeShipPlacementGeneratorMock() {
-        when(shipPlacementGenerator.getRandomShipLocation(any()))
+        when(shipPlacementGenerator.getRandomShipLocation(anyInt()))
                 .thenReturn(getMockBattleshipCoordinates())
                 .thenReturn(getMockOverlappingDestroyerCoordinates())
                 .thenReturn(getMockNonOverlappingDestroyerCoordinates());

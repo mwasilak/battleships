@@ -1,6 +1,9 @@
-package com.wasilak.battleships;
+package com.wasilak.battleships.data;
 
-class Ship {
+/**
+ * Represents a single ship for purpose of board generation and victory checks.
+ */
+public class Ship {
 
     private String name;
     private int size;

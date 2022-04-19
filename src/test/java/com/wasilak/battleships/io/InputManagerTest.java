@@ -1,5 +1,6 @@
-package com.wasilak.battleships;
+package com.wasilak.battleships.io;
 
+import com.wasilak.battleships.data.Coordinates;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

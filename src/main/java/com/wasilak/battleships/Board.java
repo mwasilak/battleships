@@ -1,33 +1,52 @@
 package com.wasilak.battleships;
 
+import com.wasilak.battleships.data.Coordinates;
+import com.wasilak.battleships.data.FieldStatus;
+import com.wasilak.battleships.data.Ship;
+
 import java.util.Arrays;
 import java.util.Map;
 
+/**
+ * Stores all in-game state and implements methods required to record game progress.
+ */
 class Board {
 
-    enum FieldStatus {
-        UNKNOWN, MISS, HIT
-    }
-
-    private Integer boardSize;
+    private int boardSize;
     private FieldStatus[][] fields;
     private Map<Coordinates, Ship> shipSegments;
 
-    public Board(Integer boardSize, Map<Coordinates, Ship> shipSegments) {
+    Board(int boardSize, Map<Coordinates, Ship> shipSegments) {
         this.boardSize = boardSize;
         this.shipSegments = shipSegments;
         initializeFreshBoard();
     }
 
-    public boolean isVictoryConditionFulfilled() {
+    /**
+     * Used for victory condition check
+     *
+     * @return true if victory condition is fulfilled (all ships are sunk), false otherwise
+     */
+    boolean isVictoryConditionFulfilled() {
         return shipSegments.isEmpty();
     }
 
-    public FieldStatus[][] getBoardStatus() {
+    /**
+     * Returns an array of board field statuses.
+     *
+     * @return 2-dimensional array of {@link FieldStatus} field statuses
+     */
+    FieldStatus[][] getBoardStatus() {
         return fields;
     }
 
-    public String processInput(Coordinates targetCoordinates) {
+    /**
+     * Processes input (shot coordinates) obtained from player and returns results of a shot
+     *
+     * @param targetCoordinates {@link Coordinates} of a square targeted by a shot
+     * @return message telling whether a shot is a hit or miss
+     */
+    String processInput(Coordinates targetCoordinates) {
         if (hasFieldNotBeenTargeted(targetCoordinates)) {
             return processShot(targetCoordinates);
         } else {
@@ -52,7 +71,7 @@ class Board {
     }
 
     private String hitOrSinkMessage(Ship damagedShip) {
-        if(!shipSegments.containsValue(damagedShip)) {
+        if (!shipSegments.containsValue(damagedShip)) {
             return damagedShip.getName() + " sunk!";
         } else {
             return damagedShip.getName() + " hit!";
@@ -65,14 +84,14 @@ class Board {
     }
 
     private boolean hasFieldNotBeenTargeted(Coordinates targetCoordinates) {
-        return fields[targetCoordinates.getRow()][targetCoordinates.getColumn()].equals(FieldStatus.UNKNOWN);
+        return fields[targetCoordinates.row()][targetCoordinates.column()].equals(FieldStatus.UNKNOWN);
     }
 
     private void markFieldAsHit(Coordinates targetCoordinates) {
-        fields[targetCoordinates.getRow()][targetCoordinates.getColumn()] = FieldStatus.HIT;
+        fields[targetCoordinates.row()][targetCoordinates.column()] = FieldStatus.HIT;
     }
 
     private void markFieldAsMiss(Coordinates targetCoordinates) {
-        fields[targetCoordinates.getRow()][targetCoordinates.getColumn()] = FieldStatus.MISS;
+        fields[targetCoordinates.row()][targetCoordinates.column()] = FieldStatus.MISS;
     }
 }

@@ -1,16 +1,15 @@
 package com.wasilak.battleships;
 
+import com.wasilak.battleships.data.Coordinates;
+import com.wasilak.battleships.data.FieldStatus;
+import com.wasilak.battleships.data.Ship;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BoardTest {
@@ -22,11 +21,11 @@ class BoardTest {
         //given
         Board board = new Board(BOARD_SIZE, getMockGunboatSegments());
         //when
-        Board.FieldStatus[][] result = board.getBoardStatus();
+        FieldStatus[][] result = board.getBoardStatus();
         //then
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
-                assertThat(result[i][j].equals(Board.FieldStatus.UNKNOWN));
+                assertThat(result[i][j].equals(FieldStatus.UNKNOWN));
             }
         }
     }
@@ -39,7 +38,7 @@ class BoardTest {
         String resultMessage = board.processInput(new Coordinates(5,5));
         //then
         assertThat(resultMessage).isEqualTo("Miss.");
-        assertThat(board.getBoardStatus()[5][5]).isEqualTo(Board.FieldStatus.MISS);
+        assertThat(board.getBoardStatus()[5][5]).isEqualTo(FieldStatus.MISS);
     }
 
     @Test
@@ -50,7 +49,7 @@ class BoardTest {
         String resultMessage = board.processInput(new Coordinates(3,6));
         //then
         assertThat(resultMessage).isEqualTo("Gunboat hit!");
-        assertThat(board.getBoardStatus()[3][6]).isEqualTo(Board.FieldStatus.HIT);
+        assertThat(board.getBoardStatus()[3][6]).isEqualTo(FieldStatus.HIT);
         assertThat(board.isVictoryConditionFulfilled()).isFalse();
     }
 
@@ -64,8 +63,8 @@ class BoardTest {
         //then
         assertThat(firstMessage).isEqualTo("Gunboat hit!");
         assertThat(secondMessage).isEqualTo("Gunboat sunk!");
-        assertThat(board.getBoardStatus()[3][6]).isEqualTo(Board.FieldStatus.HIT);
-        assertThat(board.getBoardStatus()[4][6]).isEqualTo(Board.FieldStatus.HIT);
+        assertThat(board.getBoardStatus()[3][6]).isEqualTo(FieldStatus.HIT);
+        assertThat(board.getBoardStatus()[4][6]).isEqualTo(FieldStatus.HIT);
         assertThat(board.isVictoryConditionFulfilled()).isTrue();
     }
 

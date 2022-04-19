@@ -1,5 +1,6 @@
-package com.wasilak.battleships;
+package com.wasilak.battleships.io;
 
+import com.wasilak.battleships.data.FieldStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,11 +31,11 @@ class OutputManagerTest {
         assertThat(byteArrayOutputStream.toString()).isEqualTo(getMockBoardDrawing());
     }
 
-    private Board.FieldStatus[][] getMockBoardStatus() {
-        Board.FieldStatus[][] fields = new Board.FieldStatus[BOARD_SIZE][BOARD_SIZE];
-        Arrays.stream(fields).forEach(field -> Arrays.fill(field, Board.FieldStatus.UNKNOWN));
-        fields[5][7] = Board.FieldStatus.HIT;
-        fields[4][3] = Board.FieldStatus.MISS;
+    private FieldStatus[][] getMockBoardStatus() {
+        FieldStatus[][] fields = new FieldStatus[BOARD_SIZE][BOARD_SIZE];
+        Arrays.stream(fields).forEach(field -> Arrays.fill(field, FieldStatus.UNKNOWN));
+        fields[5][7] = FieldStatus.HIT;
+        fields[4][3] = FieldStatus.MISS;
         return fields;
     }
 

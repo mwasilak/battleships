@@ -1,16 +1,24 @@
 package com.wasilak.battleships;
 
+import com.wasilak.battleships.data.Coordinates;
+import com.wasilak.battleships.data.Ship;
+import com.wasilak.battleships.generator.FleetPlacementGenerator;
+import com.wasilak.battleships.generator.ShipPlacementGenerator;
+import com.wasilak.battleships.io.InputManager;
+import com.wasilak.battleships.io.OutputManager;
+
 import java.util.*;
 
-
+/**
+ * Represents simple implementation of Battleships game.
+ */
 public class Battleships {
 
-    private static final Integer BOARD_SIZE = 10;
+    private static final int BOARD_SIZE = 10;
 
     private InputManager inputManager;
     private OutputManager outputManager;
 
-    private FleetPlacementGenerator fleetPlacementGenerator;
     private Board board;
 
     public static void main(String[] args) {
@@ -20,7 +28,6 @@ public class Battleships {
     public Battleships() {
         inputManager = new InputManager();
         outputManager = new OutputManager(BOARD_SIZE);
-        fleetPlacementGenerator = new FleetPlacementGenerator(BOARD_SIZE);
 
         List<Ship> shipsToPlace = Arrays.asList(
                 new Ship("Battleship", 5),
@@ -28,7 +35,12 @@ public class Battleships {
                 new Ship("Destroyer", 4)
         );
 
-        board = new Board(BOARD_SIZE, fleetPlacementGenerator.placeFleet(shipsToPlace));
+        board = new Board(BOARD_SIZE, getFleetGenerator().placeFleet(shipsToPlace));
+    }
+
+    private FleetPlacementGenerator getFleetGenerator() {
+        ShipPlacementGenerator shipPlacementGenerator = new ShipPlacementGenerator(BOARD_SIZE, new Random());
+        return new FleetPlacementGenerator(shipPlacementGenerator);
     }
 
     private void gameLoop() {
